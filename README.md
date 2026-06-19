@@ -22,6 +22,8 @@ A Godot 4 prototype inspired by the tavern dice game in *Kingdom Come: Deliveran
 | Three 2s-6s | Face x 100 |
 | Four/five/six of a kind | Doubles per extra die |
 | Straight 1-6 | 1500 |
+| Straight 1-5 | 500 |
+| Straight 2-6 | 750 |
 | Three pairs | 1500 |
 
 ## Run

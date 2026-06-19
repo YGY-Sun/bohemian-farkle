@@ -92,7 +92,7 @@ func _build_ui() -> void:
 	rule_label.fit_content = true
 	rule_label.scroll_active = false
 	rule_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	rule_label.text = "[b]Scoring[/b]\n1 = 100, 5 = 50. Three of a kind scores face x 100, except 1-1-1 = 1000. Four/five/six of a kind double each extra die. Straight = 1500, three pairs = 1500. Select scoring dice, then bank or risk another roll."
+	rule_label.text = "[b]Scoring[/b]\n1 = 100, 5 = 50. Three of a kind scores face x 100, except 1-1-1 = 1000. Four/five/six of a kind double each extra die. Straight 1-6 = 1500, straight 1-5 = 500, straight 2-6 = 750, three pairs = 1500. Select scoring dice, then bank or risk another roll."
 	root.add_child(rule_label)
 
 
@@ -249,6 +249,11 @@ func _best_score_for_values(values: Array[int], require_all_scoring := true) -> 
 		if pairs == 3:
 			return 1500
 
+	if _consume_short_straight(counts, 2, 6):
+		total += 750
+	elif _consume_short_straight(counts, 1, 5):
+		total += 500
+
 	for face in range(1, 7):
 		var count := counts[face]
 		if count >= 3:
@@ -263,6 +268,17 @@ func _best_score_for_values(values: Array[int], require_all_scoring := true) -> 
 			if counts[face] > 0:
 				return 0
 	return total
+
+
+func _consume_short_straight(counts: Array[int], first_face: int, last_face: int) -> bool:
+	for face in range(first_face, last_face + 1):
+		if counts[face] < 1:
+			return false
+
+	for face in range(first_face, last_face + 1):
+		counts[face] -= 1
+
+	return true
 
 
 func _count_faces(values: Array[int]) -> Array[int]:
