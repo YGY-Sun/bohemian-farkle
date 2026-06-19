@@ -31,6 +31,24 @@ A Godot 4 prototype inspired by the tavern dice game in *Kingdom Come: Deliveran
 
 Open this folder in Godot 4 and press Run.
 
+## Core Architecture
+
+The playable prototype now keeps game rules outside the UI:
+
+- `scripts/core/FarkleScorer.gd` scores dice selections and detects busts.
+- `scripts/core/MatchConfig.gd` describes match setup, including target score, player types, AI difficulty, feature toggles, and reward multiplier.
+- `scripts/core/FarkleMatch.gd` owns turn state and command-style actions such as rolling, selecting dice, and banking.
+- `scripts/core/AiPolicy.gd` owns AI banking decisions.
+- `scripts/Main.gd` is a Godot UI adapter that renders state and sends commands into the gameplay core.
+
+## Tests
+
+Run the core test suite with:
+
+```sh
+godot --headless --script tests/run_tests.gd --log-file /private/tmp/farkle-tests.log
+```
+
 ## Modes
 
 - Single Player: implemented. Player 1 is controlled by the local player, Player 2 is a background AI.
