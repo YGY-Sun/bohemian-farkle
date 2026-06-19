@@ -7,6 +7,19 @@ const TARGET_SCORE := 4000
 const PLAYER_COUNT := 2
 const HUMAN_PLAYER := 0
 const AI_PLAYER := 1
+const TABLE_DARK := Color("#1f120b")
+const TABLE_MID := Color("#4b2a16")
+const TABLE_LIGHT := Color("#7a4724")
+const PARCHMENT := Color("#d5b478")
+const PARCHMENT_DARK := Color("#8f6335")
+const INK := Color("#24170f")
+const CANDLE := Color("#f0b65a")
+const BRASS := Color("#b78238")
+const BONE := Color("#e8ddc6")
+const BONE_SELECTED := Color("#f6df9a")
+const DISABLED_TINT := Color("#8d8070")
+const PANEL_RADIUS := 8
+const DICE_SIZE := 86
 
 var rng := RandomNumberGenerator.new()
 var game_mode := GameMode.SINGLE_PLAYER
@@ -118,6 +131,34 @@ func _build_ui() -> void:
 	rule_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rule_label.text = "[b]Scoring[/b]\n1 = 100, 5 = 50. Three of a kind scores face x 100, except 1-1-1 = 1000. Four/five/six of a kind double each extra die. Straight 1-6 = 1500, straight 1-5 = 500, straight 2-6 = 750, three pairs = 1500. Select scoring dice, then bank or risk another roll."
 	root.add_child(rule_label)
+
+
+func _make_style(fill: Color, border: Color, border_width := 0, radius := PANEL_RADIUS) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.border_width_left = border_width
+	style.border_width_top = border_width
+	style.border_width_right = border_width
+	style.border_width_bottom = border_width
+	style.corner_radius_top_left = radius
+	style.corner_radius_top_right = radius
+	style.corner_radius_bottom_left = radius
+	style.corner_radius_bottom_right = radius
+	style.shadow_color = Color(0, 0, 0, 0.35)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(2, 3)
+	return style
+
+
+func _style_button(button: Button, fill: Color, border: Color, font_size := 20) -> void:
+	button.add_theme_stylebox_override("normal", _make_style(fill, border, 2, 6))
+	button.add_theme_stylebox_override("hover", _make_style(fill.lightened(0.08), CANDLE, 2, 6))
+	button.add_theme_stylebox_override("pressed", _make_style(fill.darkened(0.12), border, 2, 6))
+	button.add_theme_stylebox_override("disabled", _make_style(fill.darkened(0.25), DISABLED_TINT, 2, 6))
+	button.add_theme_color_override("font_color", Color("#f7ead0"))
+	button.add_theme_color_override("font_disabled_color", Color("#b8aa92"))
+	button.add_theme_font_size_override("font_size", font_size)
 
 
 func _new_game() -> void:
