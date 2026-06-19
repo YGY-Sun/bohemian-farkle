@@ -1,0 +1,14 @@
+# Godot 4
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# OS/editor noise
+.DS_Store
+*.tmp
+*.swp
+
+# Builds
+builds/
+exports/
