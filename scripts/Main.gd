@@ -267,6 +267,38 @@ func _style_button(button: Button, fill: Color, border: Color, font_size := 20) 
 	button.add_theme_font_size_override("font_size", font_size)
 
 
+func _style_die(button: Button, selected: bool, disabled: bool) -> void:
+	var fill := BONE_SELECTED if selected else BONE
+	var border := CANDLE if selected else Color("#5d4630")
+	if disabled:
+		fill = fill.darkened(0.18)
+		border = DISABLED_TINT
+	button.add_theme_stylebox_override("normal", _make_style(fill, border, 3, 10))
+	button.add_theme_stylebox_override("hover", _make_style(fill.lightened(0.05), CANDLE, 3, 10))
+	button.add_theme_stylebox_override("pressed", _make_style(fill.darkened(0.08), border, 3, 10))
+	button.add_theme_stylebox_override("disabled", _make_style(fill.darkened(0.2), border, 3, 10))
+	button.add_theme_color_override("font_color", INK)
+	button.add_theme_color_override("font_disabled_color", Color("#5e5144"))
+	button.add_theme_font_size_override("font_size", 34)
+
+
+func _die_face_text(value: int) -> String:
+	match value:
+		1:
+			return "."
+		2:
+			return ".  ."
+		3:
+			return ".\n.\n."
+		4:
+			return ". .\n. ."
+		5:
+			return ". .\n . \n. ."
+		6:
+			return ". .\n. .\n. ."
+	return str(value)
+
+
 func _new_game() -> void:
 	current_player = HUMAN_PLAYER
 	banked_scores = [0, 0]
@@ -498,8 +530,11 @@ func _toggle_die(index: int) -> void:
 
 
 func _refresh_ui() -> void:
-	score_label.text = "Player 1: %d / %d      AI (%s): %d / %d" % [banked_scores[0], TARGET_SCORE, _ai_difficulty_name(), banked_scores[1], TARGET_SCORE]
-	turn_label.text = "%s turn score: %d" % [_player_name(current_player), turn_score]
+	var player_mark := ">" if current_player == HUMAN_PLAYER else " "
+	var ai_mark := ">" if current_player == AI_PLAYER else " "
+	mode_label.text = "Race to %d" % TARGET_SCORE
+	score_label.text = "%s Player 1\n  %d / %d\n\n%s AI (%s)\n  %d / %d" % [player_mark, banked_scores[0], TARGET_SCORE, ai_mark, _ai_difficulty_name(), banked_scores[1], TARGET_SCORE]
+	turn_label.text = "Current turn\n%s\n\nTurn stake: %d" % [_player_name(current_player), turn_score]
 	difficulty_option.disabled = ai_turn_running
 	roll_button.disabled = game_over or not _is_human_turn()
 	bank_button.disabled = game_over or not _is_human_turn() or not can_bank
@@ -509,12 +544,12 @@ func _refresh_ui() -> void:
 
 	for i in dice_values.size():
 		var button := Button.new()
-		button.text = str(dice_values[i])
-		button.custom_minimum_size = Vector2(86, 86)
-		button.add_theme_font_size_override("font_size", 34)
-		if held_indices.has(i):
-			button.modulate = Color(0.75, 1.0, 0.72)
-		button.disabled = not _is_human_turn()
+		var selected := held_indices.has(i)
+		var disabled := not _is_human_turn()
+		button.text = _die_face_text(dice_values[i])
+		button.custom_minimum_size = Vector2(DICE_SIZE, DICE_SIZE)
+		_style_die(button, selected, disabled)
+		button.disabled = disabled
 		button.pressed.connect(_toggle_die.bind(i))
 		dice_box.add_child(button)
 
