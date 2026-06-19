@@ -308,7 +308,7 @@ func _bank_ai_points() -> void:
 
 func _ai_should_bank(dice_remaining: int) -> bool:
 	var threshold := 450
-	var chase_margin := banked_scores[HUMAN_PLAYER] - banked_scores[AI_PLAYER]
+	var chase_margin: int = banked_scores[HUMAN_PLAYER] - banked_scores[AI_PLAYER]
 
 	match ai_difficulty:
 		AiDifficulty.EASY:
