@@ -8,6 +8,7 @@ export_presets.cfg
 .DS_Store
 *.tmp
 *.swp
+.worktrees/
 
 # Builds
 builds/
