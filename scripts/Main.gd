@@ -53,21 +53,55 @@ func _ready() -> void:
 
 
 func _build_ui() -> void:
+	var table := ColorRect.new()
+	table.name = "TavernTable"
+	table.color = TABLE_MID
+	table.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(table)
+
+	var vignette := ColorRect.new()
+	vignette.name = "TableVignette"
+	vignette.color = Color(0, 0, 0, 0.18)
+	vignette.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(vignette)
+
+	var safe := MarginContainer.new()
+	safe.set_anchors_preset(Control.PRESET_FULL_RECT)
+	safe.add_theme_constant_override("margin_left", 32)
+	safe.add_theme_constant_override("margin_top", 24)
+	safe.add_theme_constant_override("margin_right", 32)
+	safe.add_theme_constant_override("margin_bottom", 28)
+	add_child(safe)
+
 	var root := VBoxContainer.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
-	root.add_theme_constant_override("separation", 18)
+	root.add_theme_constant_override("separation", 16)
 	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_theme_constant_override("margin_left", 36)
-	add_child(root)
+	safe.add_child(root)
 
+	root.add_child(_build_header())
+
+	var table_row := HBoxContainer.new()
+	table_row.add_theme_constant_override("separation", 24)
+	table_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	table_row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_child(table_row)
+
+	table_row.add_child(_build_score_panel())
+	table_row.add_child(_build_dice_table())
+	table_row.add_child(_build_rules_panel())
+
+	root.add_child(_build_action_row())
+
+
+func _build_header() -> Control:
 	var header := HBoxContainer.new()
 	header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	root.add_child(header)
 
 	title_label = Label.new()
 	title_label.text = "Bohemian Farkle"
-	title_label.add_theme_font_size_override("font_size", 34)
+	title_label.add_theme_color_override("font_color", Color("#f6d89a"))
+	title_label.add_theme_font_size_override("font_size", 32)
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title_label)
 
@@ -77,60 +111,132 @@ func _build_ui() -> void:
 	difficulty_option.add_item("Hard AI", AiDifficulty.HARD)
 	difficulty_option.selected = AiDifficulty.NORMAL
 	difficulty_option.item_selected.connect(_on_difficulty_selected)
+	_style_button(difficulty_option, TABLE_DARK, BRASS, 16)
 	header.add_child(difficulty_option)
 
 	new_game_button = Button.new()
 	new_game_button.text = "New Game"
 	new_game_button.pressed.connect(_new_game)
+	_style_button(new_game_button, TABLE_DARK, BRASS, 16)
 	header.add_child(new_game_button)
 
+	return header
+
+
+func _build_score_panel() -> Control:
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = Vector2(270, 0)
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _make_style(PARCHMENT, PARCHMENT_DARK, 3, 8))
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 18)
+	margin.add_theme_constant_override("margin_top", 18)
+	margin.add_theme_constant_override("margin_right", 18)
+	margin.add_theme_constant_override("margin_bottom", 18)
+	panel.add_child(margin)
+
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 12)
+	margin.add_child(content)
+
 	mode_label = Label.new()
-	mode_label.text = "Mode: Single Player - Player 1 vs AI"
+	mode_label.text = "Single Player"
+	mode_label.add_theme_color_override("font_color", INK)
 	mode_label.add_theme_font_size_override("font_size", 18)
-	root.add_child(mode_label)
+	content.add_child(mode_label)
 
 	score_label = Label.new()
+	score_label.add_theme_color_override("font_color", INK)
 	score_label.add_theme_font_size_override("font_size", 22)
-	root.add_child(score_label)
+	score_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	content.add_child(score_label)
 
 	turn_label = Label.new()
+	turn_label.add_theme_color_override("font_color", Color("#5a2812"))
 	turn_label.add_theme_font_size_override("font_size", 20)
-	root.add_child(turn_label)
+	turn_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	content.add_child(turn_label)
+
+	return panel
+
+
+func _build_rules_panel() -> Control:
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = Vector2(300, 0)
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_theme_stylebox_override("panel", _make_style(PARCHMENT, PARCHMENT_DARK, 3, 8))
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 18)
+	margin.add_theme_constant_override("margin_top", 18)
+	margin.add_theme_constant_override("margin_right", 18)
+	margin.add_theme_constant_override("margin_bottom", 18)
+	panel.add_child(margin)
+
+	rule_label = RichTextLabel.new()
+	rule_label.bbcode_enabled = true
+	rule_label.fit_content = false
+	rule_label.scroll_active = false
+	rule_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rule_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	rule_label.add_theme_color_override("default_color", INK)
+	rule_label.text = "[b]Scoring[/b]\n1 = 100    5 = 50\nThree 1s = 1000\nThree 2-6 = face x 100\nFour+ of a kind doubles\n1-6 straight = 1500\n1-5 straight = 500\n2-6 straight = 750\nThree pairs = 1500"
+	margin.add_child(rule_label)
+
+	return panel
+
+
+func _build_dice_table() -> Control:
+	var area := VBoxContainer.new()
+	area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	area.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	area.alignment = BoxContainer.ALIGNMENT_CENTER
+	area.add_theme_constant_override("separation", 18)
+
+	status_label = Label.new()
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status_label.add_theme_color_override("font_color", Color("#f3dfb0"))
+	status_label.add_theme_font_size_override("font_size", 20)
+	status_label.custom_minimum_size = Vector2(360, 52)
+	area.add_child(status_label)
 
 	dice_box = HBoxContainer.new()
-	dice_box.add_theme_constant_override("separation", 12)
+	dice_box.add_theme_constant_override("separation", 14)
 	dice_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	root.add_child(dice_box)
+	area.add_child(dice_box)
 
+	var props := Label.new()
+	props.text = "Candle   Cup   Coin Pouch"
+	props.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	props.add_theme_color_override("font_color", Color("#b98f5a"))
+	props.add_theme_font_size_override("font_size", 14)
+	area.add_child(props)
+
+	return area
+
+
+func _build_action_row() -> Control:
 	var actions := HBoxContainer.new()
-	actions.add_theme_constant_override("separation", 12)
-	actions.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	root.add_child(actions)
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	actions.add_theme_constant_override("separation", 14)
 
 	roll_button = Button.new()
 	roll_button.text = "Roll"
-	roll_button.custom_minimum_size = Vector2(150, 48)
+	roll_button.custom_minimum_size = Vector2(160, 50)
 	roll_button.pressed.connect(_on_roll_pressed)
+	_style_button(roll_button, Color("#6e3517"), BRASS, 22)
 	actions.add_child(roll_button)
 
 	bank_button = Button.new()
 	bank_button.text = "Bank"
-	bank_button.custom_minimum_size = Vector2(150, 48)
+	bank_button.custom_minimum_size = Vector2(160, 50)
 	bank_button.pressed.connect(_on_bank_pressed)
+	_style_button(bank_button, Color("#4d2a15"), BRASS, 22)
 	actions.add_child(bank_button)
 
-	status_label = Label.new()
-	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	status_label.add_theme_font_size_override("font_size", 18)
-	root.add_child(status_label)
-
-	rule_label = RichTextLabel.new()
-	rule_label.bbcode_enabled = true
-	rule_label.fit_content = true
-	rule_label.scroll_active = false
-	rule_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	rule_label.text = "[b]Scoring[/b]\n1 = 100, 5 = 50. Three of a kind scores face x 100, except 1-1-1 = 1000. Four/five/six of a kind double each extra die. Straight 1-6 = 1500, straight 1-5 = 500, straight 2-6 = 750, three pairs = 1500. Select scoring dice, then bank or risk another roll."
-	root.add_child(rule_label)
+	return actions
 
 
 func _make_style(fill: Color, border: Color, border_width := 0, radius := PANEL_RADIUS) -> StyleBoxFlat:
