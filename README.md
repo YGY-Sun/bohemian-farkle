@@ -4,7 +4,8 @@ A Godot 4 prototype inspired by the tavern dice game in *Kingdom Come: Deliveran
 
 ## Current Rules
 
-- Two players race to 4000 points.
+- Single player mode: Player 1 races an AI opponent to 4000 points.
+- The AI opponent supports Easy, Normal, and Hard difficulty.
 - Roll up to six dice.
 - Select at least one scoring die or scoring set after each roll.
 - Bank to keep the current turn score.
@@ -30,6 +31,12 @@ A Godot 4 prototype inspired by the tavern dice game in *Kingdom Come: Deliveran
 
 Open this folder in Godot 4 and press Run.
 
+## Modes
+
+- Single Player: implemented. Player 1 is controlled by the local player, Player 2 is a background AI.
+- Local Two Player: planned.
+- Online Two Player: planned. The current turn/controller split is intended to support a future network controller for Player 2.
+
 ## Git
 
 This folder is initialized as a Git repository. Suggested first snapshot:
@@ -44,6 +51,7 @@ git commit -m "Create Godot Farkle prototype"
 
 - Special weighted dice.
 - Badge/perk effects.
-- AI opponent.
+- Local two-player mode.
+- Online two-player matchmaking or room codes.
 - Tavern table art and dice animations.
 - Rule variants matching specific table types.
