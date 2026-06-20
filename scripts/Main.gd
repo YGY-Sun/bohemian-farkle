@@ -19,7 +19,81 @@ const BONE := Color("#e8ddc6")
 const BONE_SELECTED := Color("#f6df9a")
 const DISABLED_TINT := Color("#8d8070")
 const PANEL_RADIUS := 8
-const DICE_SIZE := 86
+const DICE_SIZE := 92
+
+class TavernBackdrop:
+	extends Control
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_RESIZED:
+			queue_redraw()
+
+
+	func _draw() -> void:
+		var table_rect := Rect2(Vector2.ZERO, size)
+		draw_rect(table_rect, Color("#2a1208"))
+
+		var plank_count := 7
+		var plank_height := size.y / plank_count
+		for plank in range(plank_count):
+			var y := plank * plank_height
+			var fill := Color("#3c1d0f") if plank % 2 == 0 else Color("#4a2614")
+			draw_rect(Rect2(0, y, size.x, plank_height), fill)
+			draw_line(Vector2(0, y), Vector2(size.x, y), Color(0, 0, 0, 0.32), 3.0)
+			draw_line(Vector2(0, y + plank_height - 2), Vector2(size.x, y + plank_height - 2), Color("#7b4422", 0.2), 1.0)
+
+		for i in range(38):
+			var x := fmod(float(i * 173), max(size.x, 1.0))
+			var y := fmod(float(i * 97), max(size.y, 1.0))
+			var length := 36.0 + fmod(float(i * 19), 96.0)
+			draw_line(Vector2(x, y), Vector2(min(x + length, size.x), y + sin(float(i)) * 5.0), Color("#160a05", 0.22), 1.0)
+
+		var light_center := Vector2(size.x * 0.56, size.y * 0.44)
+		for ring in range(9, 0, -1):
+			draw_circle(light_center, ring * 68.0, Color("#d58836", 0.018))
+
+		_draw_candle(Vector2(size.x * 0.14, size.y * 0.76))
+		_draw_cup(Vector2(size.x * 0.83, size.y * 0.77))
+		_draw_coin_pouch(Vector2(size.x * 0.68, size.y * 0.78))
+
+		draw_rect(table_rect, Color(0, 0, 0, 0.18), false, 24.0)
+		draw_rect(Rect2(Vector2.ZERO, Vector2(size.x, 26)), Color(0, 0, 0, 0.24))
+		draw_rect(Rect2(Vector2(0, size.y - 30), Vector2(size.x, 30)), Color(0, 0, 0, 0.22))
+
+
+	func _draw_candle(pos: Vector2) -> void:
+		draw_circle(pos + Vector2(0, -48), 76, Color("#f0a743", 0.09))
+		draw_circle(pos + Vector2(0, -48), 38, Color("#ffd382", 0.14))
+		draw_rect(Rect2(pos + Vector2(-13, -46), Vector2(26, 58)), Color("#d9c28a"))
+		draw_rect(Rect2(pos + Vector2(-15, 8), Vector2(30, 7)), Color("#9a6b37"))
+		draw_circle(pos + Vector2(0, -57), 9, Color("#ffbf4e"))
+		draw_circle(pos + Vector2(0, -62), 4, Color("#fff1a8"))
+
+
+	func _draw_cup(pos: Vector2) -> void:
+		draw_colored_polygon(PackedVector2Array([
+			pos + Vector2(-34, -14),
+			pos + Vector2(34, -14),
+			pos + Vector2(24, 34),
+			pos + Vector2(-24, 34),
+		]), Color("#5a321f"))
+		draw_arc(pos + Vector2(0, -14), 33, 0, TAU, 36, Color("#8f5c37"), 8.0)
+		draw_arc(pos + Vector2(0, -14), 25, 0, TAU, 36, Color("#26150d"), 5.0)
+		draw_arc(pos + Vector2(34, 9), 18, -PI * 0.45, PI * 0.45, 20, Color("#9b6a45"), 5.0)
+
+
+	func _draw_coin_pouch(pos: Vector2) -> void:
+		draw_circle(pos, 34, Color("#4a2a19"))
+		draw_circle(pos + Vector2(-8, -6), 26, Color("#6d4327"))
+		draw_line(pos + Vector2(-24, -28), pos + Vector2(24, -28), Color("#bb8b45"), 4.0)
+		for i in range(5):
+			var coin_pos := pos + Vector2(-42 + i * 16, 36 + (i % 2) * 5)
+			draw_circle(coin_pos, 8, Color("#c28a32"))
+			draw_circle(coin_pos, 5, Color("#e0b45d", 0.55))
 
 var rng := RandomNumberGenerator.new()
 var game_mode := GameMode.SINGLE_PLAYER
@@ -53,17 +127,10 @@ func _ready() -> void:
 
 
 func _build_ui() -> void:
-	var table := ColorRect.new()
+	var table := TavernBackdrop.new()
 	table.name = "TavernTable"
-	table.color = TABLE_MID
 	table.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(table)
-
-	var vignette := ColorRect.new()
-	vignette.name = "TableVignette"
-	vignette.color = Color(0, 0, 0, 0.18)
-	vignette.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(vignette)
 
 	var safe := MarginContainer.new()
 	safe.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -99,9 +166,12 @@ func _build_header() -> Control:
 	header.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	title_label = Label.new()
-	title_label.text = "Bohemian Farkle"
+	title_label.text = "Bohemian Tavern Dice"
 	title_label.add_theme_color_override("font_color", Color("#f6d89a"))
-	title_label.add_theme_font_size_override("font_size", 32)
+	title_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.75))
+	title_label.add_theme_constant_override("shadow_offset_x", 2)
+	title_label.add_theme_constant_override("shadow_offset_y", 2)
+	title_label.add_theme_font_size_override("font_size", 28)
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title_label)
 
@@ -125,9 +195,10 @@ func _build_header() -> Control:
 
 func _build_score_panel() -> Control:
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(270, 0)
+	panel.custom_minimum_size = Vector2(250, 0)
 	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", _make_style(PARCHMENT, PARCHMENT_DARK, 3, 8))
+	panel.rotation_degrees = -0.7
+	panel.add_theme_stylebox_override("panel", _make_parchment_style())
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 18)
@@ -141,7 +212,7 @@ func _build_score_panel() -> Control:
 	margin.add_child(content)
 
 	mode_label = Label.new()
-	mode_label.text = "Single Player"
+	mode_label.text = "Score Sheet"
 	mode_label.add_theme_color_override("font_color", INK)
 	mode_label.add_theme_font_size_override("font_size", 18)
 	content.add_child(mode_label)
@@ -163,9 +234,10 @@ func _build_score_panel() -> Control:
 
 func _build_rules_panel() -> Control:
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(300, 0)
+	panel.custom_minimum_size = Vector2(280, 0)
 	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	panel.add_theme_stylebox_override("panel", _make_style(PARCHMENT, PARCHMENT_DARK, 3, 8))
+	panel.rotation_degrees = 0.8
+	panel.add_theme_stylebox_override("panel", _make_parchment_style())
 
 	var margin := MarginContainer.new()
 	margin.add_theme_constant_override("margin_left", 18)
@@ -188,33 +260,46 @@ func _build_rules_panel() -> Control:
 
 
 func _build_dice_table() -> Control:
+	var table_space := VBoxContainer.new()
+	table_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	table_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	table_space.alignment = BoxContainer.ALIGNMENT_CENTER
+
+	var mat := PanelContainer.new()
+	mat.custom_minimum_size = Vector2(560, 250)
+	mat.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	mat.add_theme_stylebox_override("panel", _make_table_mat_style())
+	table_space.add_child(mat)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 28)
+	margin.add_theme_constant_override("margin_top", 20)
+	margin.add_theme_constant_override("margin_right", 28)
+	margin.add_theme_constant_override("margin_bottom", 24)
+	mat.add_child(margin)
+
 	var area := VBoxContainer.new()
-	area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	area.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	area.alignment = BoxContainer.ALIGNMENT_CENTER
-	area.add_theme_constant_override("separation", 18)
+	area.add_theme_constant_override("separation", 22)
+	margin.add_child(area)
 
 	status_label = Label.new()
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	status_label.add_theme_color_override("font_color", Color("#f3dfb0"))
+	status_label.add_theme_color_override("font_color", Color("#f6ddb0"))
+	status_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.85))
+	status_label.add_theme_constant_override("shadow_offset_x", 1)
+	status_label.add_theme_constant_override("shadow_offset_y", 2)
 	status_label.add_theme_font_size_override("font_size", 20)
-	status_label.custom_minimum_size = Vector2(360, 52)
+	status_label.custom_minimum_size = Vector2(490, 54)
 	area.add_child(status_label)
 
 	dice_box = HBoxContainer.new()
-	dice_box.add_theme_constant_override("separation", 14)
+	dice_box.add_theme_constant_override("separation", 16)
 	dice_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	area.add_child(dice_box)
 
-	var props := Label.new()
-	props.text = "Candle   Cup   Coin Pouch"
-	props.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	props.add_theme_color_override("font_color", Color("#b98f5a"))
-	props.add_theme_font_size_override("font_size", 14)
-	area.add_child(props)
-
-	return area
+	return table_space
 
 
 func _build_action_row() -> Control:
@@ -224,14 +309,14 @@ func _build_action_row() -> Control:
 
 	roll_button = Button.new()
 	roll_button.text = "Roll"
-	roll_button.custom_minimum_size = Vector2(160, 50)
+	roll_button.custom_minimum_size = Vector2(170, 54)
 	roll_button.pressed.connect(_on_roll_pressed)
 	_style_button(roll_button, Color("#6e3517"), BRASS, 22)
 	actions.add_child(roll_button)
 
 	bank_button = Button.new()
 	bank_button.text = "Bank"
-	bank_button.custom_minimum_size = Vector2(160, 50)
+	bank_button.custom_minimum_size = Vector2(170, 54)
 	bank_button.pressed.connect(_on_bank_pressed)
 	_style_button(bank_button, Color("#4d2a15"), BRASS, 22)
 	actions.add_child(bank_button)
@@ -254,6 +339,26 @@ func _make_style(fill: Color, border: Color, border_width := 0, radius := PANEL_
 	style.shadow_color = Color(0, 0, 0, 0.35)
 	style.shadow_size = 8
 	style.shadow_offset = Vector2(2, 3)
+	return style
+
+
+func _make_parchment_style() -> StyleBoxFlat:
+	var style := _make_style(Color("#d8b978"), Color("#5f351c"), 3, 5)
+	style.shadow_color = Color(0, 0, 0, 0.55)
+	style.shadow_size = 14
+	style.shadow_offset = Vector2(5, 7)
+	style.content_margin_left = 16
+	style.content_margin_top = 16
+	style.content_margin_right = 16
+	style.content_margin_bottom = 16
+	return style
+
+
+func _make_table_mat_style() -> StyleBoxFlat:
+	var style := _make_style(Color("#271005", 0.72), Color("#8b5529", 0.85), 2, 8)
+	style.shadow_color = Color(0, 0, 0, 0.5)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 8)
 	return style
 
 
@@ -282,21 +387,56 @@ func _style_die(button: Button, selected: bool, disabled: bool) -> void:
 	button.add_theme_font_size_override("font_size", 34)
 
 
-func _die_face_text(value: int) -> String:
+func _die_pip_positions(value: int) -> Array[int]:
 	match value:
 		1:
-			return "."
+			return [4]
 		2:
-			return ".  ."
+			return [0, 8]
 		3:
-			return ".\n.\n."
+			return [0, 4, 8]
 		4:
-			return ". .\n. ."
+			return [0, 2, 6, 8]
 		5:
-			return ". .\n . \n. ."
+			return [0, 2, 4, 6, 8]
 		6:
-			return ". .\n. .\n. ."
-	return str(value)
+			return [0, 2, 3, 5, 6, 8]
+	return []
+
+
+func _add_die_pips(button: Button, value: int, disabled: bool) -> void:
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	margin.add_theme_constant_override("margin_left", 18)
+	margin.add_theme_constant_override("margin_top", 18)
+	margin.add_theme_constant_override("margin_right", 18)
+	margin.add_theme_constant_override("margin_bottom", 18)
+	button.add_child(margin)
+
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	margin.add_child(grid)
+
+	var active_positions := _die_pip_positions(value)
+	for cell_index in range(9):
+		var cell := CenterContainer.new()
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		cell.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		grid.add_child(cell)
+
+		if not active_positions.has(cell_index):
+			continue
+
+		var pip := Panel.new()
+		pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		pip.custom_minimum_size = Vector2(10, 10)
+		pip.add_theme_stylebox_override("panel", _make_style(Color("#1b100a") if not disabled else Color("#5e5144"), Color.TRANSPARENT, 0, 5))
+		cell.add_child(pip)
 
 
 func _new_game() -> void:
@@ -546,9 +686,11 @@ func _refresh_ui() -> void:
 		var button := Button.new()
 		var selected := held_indices.has(i)
 		var disabled := not _is_human_turn()
-		button.text = _die_face_text(dice_values[i])
+		button.text = ""
+		button.focus_mode = Control.FOCUS_NONE
 		button.custom_minimum_size = Vector2(DICE_SIZE, DICE_SIZE)
 		_style_die(button, selected, disabled)
+		_add_die_pips(button, dice_values[i], disabled)
 		button.disabled = disabled
 		button.pressed.connect(_toggle_die.bind(i))
 		dice_box.add_child(button)
