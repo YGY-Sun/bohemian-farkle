@@ -1,0 +1,39 @@
+{
+  "name": "props",
+  "goal": "生成独立道具图层，为后续烛光、钱币闪烁和桌面氛围动画预留空间。",
+  "output_format": "transparent_png",
+  "output_directory": "assets/art/ui/tavern/props",
+  "transparent_background": true,
+  "review_required": true,
+  "review_questions": [
+	"蜡烛、酒杯、钱袋、硬币是否和主背景风格一致？",
+	"道具是否会抢走骰子区注意力？",
+    "是否适合后续做轻微动画或光效？"
+  ],
+  "prompts": [
+	{
+	  "file_name": "prop_candle.png",
+	  "size": "512x512",
+	  "prompt": "A medieval tavern candle game asset, short wax candle on small brass holder, warm flame glow, realistic candlelit style, transparent background, centered object, high detail, no text",
+	  "negative_prompt": "cartoon candle, modern candle, electric light, text, watermark, table background"
+	},
+	{
+	  "file_name": "prop_clay_cup.png",
+	  "size": "512x512",
+	  "prompt": "A medieval clay drinking cup game asset, worn ceramic mug, dark ale stains, realistic tavern lighting, transparent background, centered object, no text",
+	  "negative_prompt": "modern glass, metal beer mug, cartoon, text, watermark, table background"
+	},
+	{
+	  "file_name": "prop_coin_pouch.png",
+	  "size": "512x512",
+	  "prompt": "A medieval leather coin pouch game asset, brown worn leather bag tied with cord, realistic tavern tabletop lighting, transparent background, centered object, no text",
+	  "negative_prompt": "modern purse, cartoon, bright fantasy bag, text, watermark, table background"
+	},
+	{
+	  "file_name": "prop_scattered_coins.png",
+	  "size": "512x512",
+	  "prompt": "A small scatter of medieval silver and brass coins game asset, worn old coins, realistic candlelit tabletop lighting, transparent background, centered composition, no text",
+	  "negative_prompt": "modern coins, gold treasure pile, cartoon, text, watermark, table background"
+	}
+  ]
+}

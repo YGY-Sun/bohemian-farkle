@@ -1,0 +1,75 @@
+{
+  "name": "buttons",
+  "goal": "生成空白按钮底图。按钮图片中不要出现 Roll、Bank、New Game 等文字，文字由 Godot 渲染。",
+  "output_format": "transparent_png",
+  "output_directory": "assets/art/ui/tavern/buttons",
+  "transparent_background": true,
+  "sizes": {
+	"large": "360x120",
+	"small": "220x80"
+  },
+  "review_required": true,
+  "review_questions": [
+	"按钮是否像木牌、铜牌或桌边下注牌？",
+	"normal、hover、pressed、disabled 状态是否容易区分？",
+    "按钮中心是否留出文字空间？"
+  ],
+  "prompts": [
+	{
+	  "file_name": "button_large_normal.png",
+	  "size": "360x120",
+	  "state": "normal",
+	  "prompt": "A medieval tavern wooden button UI asset, carved dark wood plaque with muted brass trim, worn edges, warm candlelit highlights, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_large_hover.png",
+	  "size": "360x120",
+	  "state": "hover",
+	  "prompt": "A medieval tavern wooden button UI asset in hover state, carved dark wood plaque with slightly brighter brass trim and warm candlelit highlight, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_large_pressed.png",
+	  "size": "360x120",
+	  "state": "pressed",
+	  "prompt": "A medieval tavern wooden button UI asset in pressed state, carved dark wood plaque with darker depressed center, muted brass trim, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_large_disabled.png",
+	  "size": "360x120",
+	  "state": "disabled",
+	  "prompt": "A disabled medieval tavern wooden button UI asset, dark worn wood plaque with dull brass trim, muted low contrast, transparent background, blank center for text, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_small_normal.png",
+	  "size": "220x80",
+	  "state": "normal",
+	  "prompt": "A small medieval tavern wooden button UI asset, carved dark wood plaque with muted brass trim, worn edges, warm candlelit highlights, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_small_hover.png",
+	  "size": "220x80",
+	  "state": "hover",
+	  "prompt": "A small medieval tavern wooden button UI asset in hover state, carved dark wood plaque with slightly brighter brass trim and warm candlelit highlight, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_small_pressed.png",
+	  "size": "220x80",
+	  "state": "pressed",
+	  "prompt": "A small medieval tavern wooden button UI asset in pressed state, carved dark wood plaque with darker depressed center, muted brass trim, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	},
+	{
+	  "file_name": "button_small_disabled.png",
+	  "size": "220x80",
+	  "state": "disabled",
+	  "prompt": "A small disabled medieval tavern wooden button UI asset, dark worn wood plaque with dull brass trim, muted low contrast, transparent background, blank center for text, no text, no logo",
+	  "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+	}
+  ]
+}

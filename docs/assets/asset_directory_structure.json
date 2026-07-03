@@ -1,0 +1,67 @@
+{
+  "name": "asset_directory_structure",
+  "version": "1.0",
+  "root": "assets",
+  "notes": [
+	"当前项目暂不区分 2D 和 3D。",
+	"所有 Godot 运行时素材放在 assets/ 下。",
+    "生成提示词和审核文档继续放在 docs/assets/ 下。"
+  ],
+  "directories": {
+	"audio": {
+	  "music": "assets/audio/music",
+	  "sfx": "assets/audio/sfx"
+	},
+	"art": {
+	  "backgrounds": "assets/art/backgrounds",
+	  "sprites": "assets/art/sprites",
+	  "ui": {
+		"tavern": {
+		  "backgrounds": "assets/art/ui/tavern/backgrounds",
+		  "dice": "assets/art/ui/tavern/dice",
+		  "parchment": "assets/art/ui/tavern/parchment",
+		  "buttons": "assets/art/ui/tavern/buttons",
+		  "props": "assets/art/ui/tavern/props",
+		  "effects": "assets/art/ui/tavern/effects"
+		}
+	  }
+	}
+  },
+  "planned_tavern_assets": {
+	"backgrounds": [
+	  "assets/art/ui/tavern/backgrounds/bg_tavern_table_concept_a.png",
+	  "assets/art/ui/tavern/backgrounds/bg_tavern_table_concept_b.png",
+	  "assets/art/ui/tavern/backgrounds/bg_tavern_table_concept_c.png",
+      "assets/art/ui/tavern/backgrounds/bg_tavern_table_final.png"
+	],
+	"dice": [
+	  "assets/art/ui/tavern/dice/die_1.png",
+	  "assets/art/ui/tavern/dice/die_2.png",
+	  "assets/art/ui/tavern/dice/die_3.png",
+	  "assets/art/ui/tavern/dice/die_4.png",
+	  "assets/art/ui/tavern/dice/die_5.png",
+      "assets/art/ui/tavern/dice/die_6.png"
+	],
+	"parchment": [
+	  "assets/art/ui/tavern/parchment/panel_score_parchment.png",
+      "assets/art/ui/tavern/parchment/panel_rules_parchment.png"
+	],
+	"buttons": [
+	  "assets/art/ui/tavern/buttons/button_large_normal.png",
+	  "assets/art/ui/tavern/buttons/button_large_hover.png",
+	  "assets/art/ui/tavern/buttons/button_large_pressed.png",
+	  "assets/art/ui/tavern/buttons/button_large_disabled.png",
+	  "assets/art/ui/tavern/buttons/button_small_normal.png",
+	  "assets/art/ui/tavern/buttons/button_small_hover.png",
+	  "assets/art/ui/tavern/buttons/button_small_pressed.png",
+      "assets/art/ui/tavern/buttons/button_small_disabled.png"
+	],
+	"props": [
+	  "assets/art/ui/tavern/props/prop_candle.png",
+	  "assets/art/ui/tavern/props/prop_clay_cup.png",
+	  "assets/art/ui/tavern/props/prop_coin_pouch.png",
+      "assets/art/ui/tavern/props/prop_scattered_coins.png"
+	],
+	"effects": []
+  }
+}

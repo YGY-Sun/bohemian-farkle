@@ -1,0 +1,29 @@
+{
+  "name": "parchment_panels",
+  "goal": "生成计分羊皮纸和规则羊皮纸。图片中不要出现任何文字，文字由 Godot 渲染。",
+  "output_format": "transparent_png",
+  "output_directory": "assets/art/ui/tavern/parchment",
+  "transparent_background": true,
+  "review_required": true,
+  "review_questions": [
+	"计分面板和规则面板是否区别明确？",
+	"纸张是否有不规则边缘、污渍和阴影？",
+    "中间区域是否足够干净，方便 Godot 渲染文字？"
+  ],
+  "prompts": [
+	{
+	  "file_name": "panel_score_parchment.png",
+	  "asset_type": "score_panel",
+	  "size": "420x620",
+	  "prompt": "A medieval parchment score sheet UI panel, blank parchment paper, irregular worn edges, subtle stains, folded corners, warm aged yellow-brown paper, slight shadow, realistic game UI asset, transparent background, no text, no symbols, vertical rectangle, polished medieval tavern style",
+	  "negative_prompt": "text, writing, logo, modern paper, clean white paper, scroll roll, cartoon, fantasy glowing border, metal frame"
+	},
+	{
+	  "file_name": "panel_rules_parchment.png",
+	  "asset_type": "rules_panel",
+	  "size": "430x560",
+	  "prompt": "A blank medieval tavern rules parchment UI panel, aged paper notice, irregular edges, small stains, slightly curled corners, warm candlelit color, realistic tabletop game UI asset, transparent background, vertical parchment rectangle, no text, no logo",
+	  "negative_prompt": "text, writing, logo, modern paper, clean white paper, scroll roll, cartoon, fantasy glowing border, metal frame"
+	}
+  ]
+}

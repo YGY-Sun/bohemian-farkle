@@ -1,0 +1,26 @@
+{
+  "name": "layout_and_acceptance",
+  "usage": "当所有素材生成完后，用这个文件检查素材是否适合接入 Godot。",
+  "asset_root": "assets",
+  "tavern_ui_root": "assets/art/ui/tavern",
+  "layout_reservation_notes": {
+	"dice_animation_space": "中央骰子区至少保留 560x260 的无遮挡区域，后续骰子滚动和碰撞动画都在这里发生。",
+	"special_dice_space": "骰子区左下或右下预留一个小型骰子袋/装备槽位置，用于后续特殊骰、加权骰或 perk。",
+	"ai_feedback_space": "桌面对侧或右上方预留 AI 行动提示区域，未来可显示对手下注、保留骰子、犹豫等反馈。",
+	"effect_space": "中央区域不要被大面板遮挡，热骰、爆骰、胜利效果会在这里短暂播放。",
+	"mode_expansion": "Single、Local、Online 模式不建议挤在主对局桌面，后续可放在开局或设置层。"
+  },
+  "acceptance_criteria": [
+	"第一眼像中世纪酒馆赌桌，而不是现代 UI 换皮。",
+	"骰子是视觉中心，且点数清晰。",
+	"羊皮纸承载信息但不压过桌面氛围。",
+	"主背景预留了明确 UI 空间，不需要大面积裁切。",
+	"所有独立贴图风格、光源、透视一致。",
+    "所有需要 Godot 渲染文字的素材都不包含生成文字。"
+  ],
+  "final_review_questions": [
+	"实际游戏截图是否已经像成品 UI？",
+	"主要交互区域是否清晰？",
+    "是否为后续骰子动画、热骰、爆骰、AI 行动反馈留出空间？"
+  ]
+}
