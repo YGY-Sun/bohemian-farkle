@@ -1,0 +1,42 @@
+{
+  "name": "background_concepts",
+  "goal": "生成 3 张主背景方向稿，从中选择一个作为最终 UI 视觉基准。",
+  "output_size": "1920x1080",
+  "output_format": "png_or_high_quality_jpg",
+  "output_directory": "assets/art/ui/tavern/backgrounds",
+  "transparent_background": false,
+  "review_required": true,
+  "review_questions": [
+	"是否第一眼像中世纪波西米亚酒馆赌桌？",
+	"中央骰子区是否足够干净？",
+	"左右是否给计分和规则面板留下空间？",
+    "画面是否太暗、太花或太现代？"
+  ],
+  "layout_requirements": {
+	"center": "中央偏下预留骰子滚动区，桌面纹理清晰但不要杂乱。",
+	"left": "左侧预留计分羊皮纸位置。",
+	"right": "右侧预留规则或提示羊皮纸位置。",
+	"bottom": "底部预留 Roll 和 Bank 操作按钮。",
+	"top_right": "预留 New Game 和 AI 难度选择的小型控件空间。"
+  },
+  "prompts": [
+	{
+	  "file_name": "bg_tavern_table_concept_a.png",
+	  "label": "standard_layout",
+	  "prompt": "A finished game background for a medieval Bohemian tavern dice game, close-up view of a worn wooden tavern table, 30-45 degree top-down perspective, candlelit warm atmosphere, dark tavern interior in the background, old wooden planks with scratches and stains, scattered coins, a leather coin pouch, a clay cup, a candle with warm glow, realistic medieval Central European tavern mood, clean empty space in the center for dice, empty space on the left and right for parchment UI panels, empty space at the bottom for two action buttons, cinematic but readable game UI background, high detail, polished game asset, 1920x1080, no text, no logo",
+	  "negative_prompt": "modern casino, neon lights, plastic dice, cartoon style, mobile game cartoon, clean modern UI, sci-fi, fantasy magic glow, oversized interface panels, text, logo, watermark, characters in foreground, cluttered center"
+	},
+	{
+	  "file_name": "bg_tavern_table_concept_b.png",
+	  "label": "darker_immersive",
+	  "prompt": "A dark candlelit medieval Bohemian tavern tabletop game background, worn wooden dice table viewed from a close 30-45 degree top-down player perspective, warm candle glow falling across the center of the table, deep shadows around the edges, clay cup, leather coin pouch, scattered old coins, scratched wood surface, realistic historical tavern atmosphere, empty central dice rolling area, subtle reserved spaces for parchment panels on left and right, polished realistic game UI background, 1920x1080, no text",
+	  "negative_prompt": "modern casino, neon lights, plastic dice, cartoon style, mobile game cartoon, clean modern UI, sci-fi, fantasy magic glow, oversized interface panels, text, logo, watermark, characters in foreground, cluttered center"
+	},
+	{
+	  "file_name": "bg_tavern_table_concept_c.png",
+	  "label": "clear_ui_readability",
+	  "prompt": "A polished game UI background for a medieval tavern dice game, close tabletop view of a worn wooden table in a Bohemian inn, balanced candlelit lighting, readable clean central area for dice, parchment panel space on left and right, action button space at the bottom, props placed around the edges only, realistic wood grain, coins, cup, candle, leather pouch, high-detail finished game asset, 1920x1080, no text, no logo",
+	  "negative_prompt": "modern casino, neon lights, plastic dice, cartoon style, mobile game cartoon, clean modern UI, sci-fi, fantasy magic glow, oversized interface panels, text, logo, watermark, characters in foreground, cluttered center"
+	}
+  ]
+}

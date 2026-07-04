@@ -1,0 +1,340 @@
+{
+  "document_name": "Bohemian Tavern Dice Image Generation Brief",
+  "version": "1.0",
+  "language": "zh-CN",
+  "purpose": "为生图 LLM 提供波西米亚酒馆骰子游戏的成品化 UI 素材生成说明。",
+  "global_art_direction": {
+    "style": "realistic polished game UI asset",
+    "setting": "medieval Bohemian tavern dice table",
+    "camera": "30-45 degree top-down close tabletop view",
+    "mood": "warm candlelit, dark tavern, worn wooden table, grounded historical atmosphere",
+    "palette": [
+      "dark worn wood",
+      "warm candle amber",
+      "aged parchment yellow-brown",
+      "old ivory bone dice",
+      "muted brass",
+      "deep shadow"
+    ],
+    "must_avoid": [
+      "modern casino",
+      "neon lights",
+      "plastic dice",
+      "cartoon mobile game style",
+      "clean modern UI cards",
+      "sci-fi",
+      "fantasy magic glow",
+      "watermark",
+      "logo",
+      "generated text inside image"
+    ]
+  },
+  "generation_order": [
+    {
+      "step": 1,
+      "name": "background_concepts",
+      "action": "生成 3 张主背景方向稿",
+      "reason": "先确定整体镜头、光源、桌面质感和 UI 预留空间，避免后续资产风格跑偏。",
+      "review_required": true,
+      "review_node_id": "review_background_direction"
+    },
+    {
+      "step": 2,
+      "name": "style_samples",
+      "action": "基于选中的背景方向，生成 1 个五点骰样例和 1 个羊皮纸样例",
+      "reason": "确认骰子、纸张、背景是否属于同一视觉世界。",
+      "review_required": true,
+      "review_node_id": "review_style_samples"
+    },
+    {
+      "step": 3,
+      "name": "dice_set",
+      "action": "生成 1-6 点骰子完整贴图",
+      "reason": "骰子是核心交互资产，必须先稳定。",
+      "review_required": true,
+      "review_node_id": "review_dice_set"
+    },
+    {
+      "step": 4,
+      "name": "parchment_panels",
+      "action": "生成计分羊皮纸和规则羊皮纸",
+      "reason": "确定信息承载区域的成品质感和可读性。",
+      "review_required": true,
+      "review_node_id": "review_parchment_panels"
+    },
+    {
+      "step": 5,
+      "name": "buttons",
+      "action": "生成 Roll、Bank、New Game、难度选择按钮底图",
+      "reason": "按钮需要匹配桌面材质，同时保留清晰交互状态。",
+      "review_required": true,
+      "review_node_id": "review_buttons"
+    },
+    {
+      "step": 6,
+      "name": "props",
+      "action": "生成独立道具图层：蜡烛、酒杯、钱袋、散落硬币",
+      "reason": "独立图层为后续烛光、钱币闪烁和桌面氛围动画预留空间。",
+      "review_required": true,
+      "review_node_id": "review_props"
+    },
+    {
+      "step": 7,
+      "name": "godot_static_integration",
+      "action": "接入 Godot，重建静态素材驱动 UI",
+      "reason": "先验证真实游戏截图中的布局和可读性，再进入动画阶段。",
+      "review_required": true,
+      "review_node_id": "review_static_integration"
+    }
+  ],
+  "review_nodes": [
+    {
+      "id": "review_background_direction",
+      "title": "主背景方向审核",
+      "reviewer": "user",
+      "questions": [
+        "是否第一眼像中世纪波西米亚酒馆赌桌？",
+        "中央骰子区是否足够干净？",
+        "左右是否给计分和规则面板留下空间？",
+        "画面是否太暗、太花或太现代？"
+      ],
+      "approval_needed_before": "style_samples"
+    },
+    {
+      "id": "review_style_samples",
+      "title": "骰子和羊皮纸风格样例审核",
+      "reviewer": "user",
+      "questions": [
+        "骰子是否像旧骨骰或象牙骰，而不是现代塑料骰？",
+        "羊皮纸是否有成品感且适合承载文字？",
+        "骰子、纸张、背景的光源和材质是否统一？"
+      ],
+      "approval_needed_before": "dice_set"
+    },
+    {
+      "id": "review_dice_set",
+      "title": "完整骰子套装审核",
+      "reviewer": "user",
+      "questions": [
+        "1-6 点数是否清晰可读？",
+        "所有骰子的角度、尺寸、光源是否一致？",
+        "是否适合后续做滚动、选中、禁用状态？"
+      ],
+      "approval_needed_before": "parchment_panels"
+    },
+    {
+      "id": "review_parchment_panels",
+      "title": "羊皮纸面板审核",
+      "reviewer": "user",
+      "questions": [
+        "计分面板和规则面板是否区别明确？",
+        "纸张是否有不规则边缘、污渍和阴影？",
+        "中间区域是否足够干净，方便 Godot 渲染文字？"
+      ],
+      "approval_needed_before": "buttons"
+    },
+    {
+      "id": "review_buttons",
+      "title": "按钮贴图审核",
+      "reviewer": "user",
+      "questions": [
+        "按钮是否像木牌、铜牌或桌边下注牌？",
+        "normal、hover、pressed、disabled 状态是否容易区分？",
+        "按钮中心是否留出文字空间？"
+      ],
+      "approval_needed_before": "props"
+    },
+    {
+      "id": "review_props",
+      "title": "独立道具审核",
+      "reviewer": "user",
+      "questions": [
+        "蜡烛、酒杯、钱袋、硬币是否和主背景风格一致？",
+        "道具是否会抢走骰子区注意力？",
+        "是否适合后续做轻微动画或光效？"
+      ],
+      "approval_needed_before": "godot_static_integration"
+    },
+    {
+      "id": "review_static_integration",
+      "title": "Godot 静态接入截图审核",
+      "reviewer": "user",
+      "questions": [
+        "实际游戏截图是否已经像成品 UI？",
+        "主要交互区域是否清晰？",
+        "是否为后续骰子动画、热骰、爆骰、AI 行动反馈留出空间？"
+      ],
+      "approval_needed_before": "animation_layer"
+    }
+  ],
+  "assets": [
+    {
+      "id": "main_background",
+      "type": "background",
+      "priority": "critical",
+      "count": 3,
+      "final_count": 1,
+      "file_names": [
+        "bg_tavern_table_concept_a.png",
+        "bg_tavern_table_concept_b.png",
+        "bg_tavern_table_concept_c.png",
+        "bg_tavern_table_final.png"
+      ],
+      "size": "1920x1080",
+      "format": "png_or_high_quality_jpg",
+      "transparent_background": false,
+      "layout_requirements": {
+        "center": "中央偏下预留骰子滚动区，桌面纹理清晰但不要杂乱。",
+        "left": "左侧预留计分羊皮纸位置。",
+        "right": "右侧预留规则或提示羊皮纸位置。",
+        "bottom": "底部预留 Roll 和 Bank 操作按钮。",
+        "top_right": "预留 New Game 和 AI 难度选择的小型控件空间。"
+      },
+      "prompt": "A finished game background for a medieval Bohemian tavern dice game, close-up view of a worn wooden tavern table, 30-45 degree top-down perspective, candlelit warm atmosphere, dark tavern interior in the background, old wooden planks with scratches and stains, scattered coins, a leather coin pouch, a clay cup, a candle with warm glow, realistic medieval Central European tavern mood, space left in the center for dice, space on the left and right for parchment UI panels, space at the bottom for two action buttons, cinematic but readable game UI background, high detail, polished game asset, 1920x1080",
+      "negative_prompt": "modern casino, neon lights, plastic dice, cartoon style, mobile game cartoon, clean modern UI, sci-fi, fantasy magic glow, oversized interface panels, text, logo, watermark, characters in foreground, blurry dice area, cluttered center"
+    },
+    {
+      "id": "dice_sample",
+      "type": "sample",
+      "priority": "critical",
+      "count": 1,
+      "file_names": [
+        "die_sample_5.png"
+      ],
+      "size": "256x256",
+      "format": "transparent_png",
+      "transparent_background": true,
+      "prompt": "A single medieval bone die showing five pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+      "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+    },
+    {
+      "id": "dice_set",
+      "type": "interactive_asset",
+      "priority": "critical",
+      "count": 6,
+      "file_names": [
+        "die_1.png",
+        "die_2.png",
+        "die_3.png",
+        "die_4.png",
+        "die_5.png",
+        "die_6.png"
+      ],
+      "size": "256x256",
+      "format": "transparent_png",
+      "transparent_background": true,
+      "shared_prompt": "A single medieval bone dice game asset, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+      "per_asset_prompt_template": "A single medieval bone die showing {pip_count} pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+      "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background",
+      "state_handling": {
+        "normal": "使用原贴图。",
+        "selected": "Godot 中添加暖色描边、轻微上移或光圈，不需要单独生成。",
+        "disabled": "Godot 中降低透明度和饱和度，不需要单独生成。"
+      }
+    },
+    {
+      "id": "score_parchment_panel",
+      "type": "ui_panel",
+      "priority": "critical",
+      "count": 1,
+      "file_names": [
+        "panel_score_parchment.png"
+      ],
+      "size": "420x620",
+      "format": "transparent_png",
+      "transparent_background": true,
+      "prompt": "A medieval parchment score sheet UI panel, blank parchment paper, irregular worn edges, subtle stains, folded corners, warm aged yellow-brown paper, slight shadow, realistic game UI asset, transparent background, no text, no symbols, vertical rectangle, polished medieval tavern style",
+      "negative_prompt": "text, writing, logo, modern paper, clean white paper, scroll roll, cartoon, fantasy glowing border, metal frame"
+    },
+    {
+      "id": "rules_parchment_panel",
+      "type": "ui_panel",
+      "priority": "high",
+      "count": 1,
+      "file_names": [
+        "panel_rules_parchment.png"
+      ],
+      "size": "430x560",
+      "format": "transparent_png",
+      "transparent_background": true,
+      "prompt": "A blank medieval tavern rules parchment UI panel, aged paper notice, irregular edges, small stains, slightly curled corners, warm candlelit color, realistic tabletop game UI asset, transparent background, vertical parchment rectangle, no text, no logo",
+      "negative_prompt": "text, writing, logo, modern paper, clean white paper, scroll roll, cartoon, fantasy glowing border, metal frame"
+    },
+    {
+      "id": "action_buttons",
+      "type": "ui_button",
+      "priority": "high",
+      "count": 8,
+      "file_names": [
+        "button_large_normal.png",
+        "button_large_hover.png",
+        "button_large_pressed.png",
+        "button_large_disabled.png",
+        "button_small_normal.png",
+        "button_small_hover.png",
+        "button_small_pressed.png",
+        "button_small_disabled.png"
+      ],
+      "sizes": {
+        "large": "360x120",
+        "small": "220x80"
+      },
+      "format": "transparent_png",
+      "transparent_background": true,
+      "normal_prompt": "A medieval tavern wooden button UI asset, carved dark wood plaque with muted brass trim, worn edges, warm candlelit highlights, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+      "hover_prompt": "A medieval tavern wooden button UI asset in hover state, carved dark wood plaque with slightly brighter brass trim and warm candlelit highlight, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+      "pressed_prompt": "A medieval tavern wooden button UI asset in pressed state, carved dark wood plaque with darker depressed center, muted brass trim, transparent background, blank center for text, polished realistic game interface asset, no text, no logo",
+      "disabled_prompt": "A disabled medieval tavern wooden button UI asset, dark worn wood plaque with dull brass trim, muted low contrast, transparent background, blank center for text, no text, no logo",
+      "negative_prompt": "text, logo, modern web button, neon, plastic, cartoon, glossy mobile game button, sci-fi"
+    },
+    {
+      "id": "props",
+      "type": "decorative_layers",
+      "priority": "medium",
+      "count": 4,
+      "format": "transparent_png",
+      "transparent_background": true,
+      "items": [
+        {
+          "file_name": "prop_candle.png",
+          "size": "512x512",
+          "prompt": "A medieval tavern candle game asset, short wax candle on small brass holder, warm flame glow, realistic candlelit style, transparent background, centered object, high detail, no text",
+          "negative_prompt": "cartoon candle, modern candle, electric light, text, watermark, table background"
+        },
+        {
+          "file_name": "prop_clay_cup.png",
+          "size": "512x512",
+          "prompt": "A medieval clay drinking cup game asset, worn ceramic mug, dark ale stains, realistic tavern lighting, transparent background, centered object, no text",
+          "negative_prompt": "modern glass, metal beer mug, cartoon, text, watermark, table background"
+        },
+        {
+          "file_name": "prop_coin_pouch.png",
+          "size": "512x512",
+          "prompt": "A medieval leather coin pouch game asset, brown worn leather bag tied with cord, realistic tavern tabletop lighting, transparent background, centered object, no text",
+          "negative_prompt": "modern purse, cartoon, bright fantasy bag, text, watermark, table background"
+        },
+        {
+          "file_name": "prop_scattered_coins.png",
+          "size": "512x512",
+          "prompt": "A small scatter of medieval silver and brass coins game asset, worn old coins, realistic candlelit tabletop lighting, transparent background, centered composition, no text",
+          "negative_prompt": "modern coins, gold treasure pile, cartoon, text, watermark, table background"
+        }
+      ]
+    }
+  ],
+  "layout_reservation_notes": {
+    "dice_animation_space": "中央骰子区至少保留 560x260 的无遮挡区域，后续骰子滚动和碰撞动画都在这里发生。",
+    "special_dice_space": "骰子区左下或右下预留一个小型骰子袋/装备槽位置，用于后续特殊骰、加权骰或 perk。",
+    "ai_feedback_space": "桌面对侧或右上方预留 AI 行动提示区域，未来可显示对手下注、保留骰子、犹豫等反馈。",
+    "effect_space": "中央区域不要被大面板遮挡，热骰、爆骰、胜利效果会在这里短暂播放。",
+    "mode_expansion": "Single、Local、Online 模式不建议挤在主对局桌面，后续可放在开局或设置层。"
+  },
+  "acceptance_criteria": [
+    "第一眼像中世纪酒馆赌桌，而不是现代 UI 换皮。",
+    "骰子是视觉中心，且点数清晰。",
+    "羊皮纸承载信息但不压过桌面氛围。",
+    "主背景预留了明确 UI 空间，不需要大面积裁切。",
+    "所有独立贴图风格、光源、透视一致。",
+    "所有需要 Godot 渲染文字的素材都不包含生成文字。"
+  ]
+}

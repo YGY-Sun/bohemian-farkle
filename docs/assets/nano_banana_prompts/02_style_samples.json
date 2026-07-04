@@ -1,0 +1,34 @@
+{
+  "name": "style_samples",
+  "goal": "在主背景方向通过后，生成 1 个五点骰样例和 1 个羊皮纸样例，确认素材风格统一。",
+  "output_directories": {
+	"dice_sample": "assets/art/ui/tavern/dice",
+	"parchment_sample": "assets/art/ui/tavern/parchment"
+  },
+  "review_required": true,
+  "review_questions": [
+	"骰子是否像旧骨骰或象牙骰，而不是现代塑料骰？",
+	"羊皮纸是否有成品感且适合承载文字？",
+    "骰子、纸张、背景的光源和材质是否统一？"
+  ],
+  "prompts": [
+	{
+	  "file_name": "die_sample_5.png",
+	  "asset_type": "dice_sample",
+	  "size": "256x256",
+	  "format": "transparent_png",
+	  "transparent_background": true,
+	  "prompt": "A single medieval bone die showing five pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	},
+	{
+	  "file_name": "panel_parchment_sample.png",
+	  "asset_type": "parchment_sample",
+	  "size": "420x620",
+	  "format": "transparent_png",
+	  "transparent_background": true,
+	  "prompt": "A medieval parchment score sheet UI panel, blank parchment paper, irregular worn edges, subtle stains, folded corners, warm aged yellow-brown paper, slight shadow, realistic game UI asset, transparent background, no text, no symbols, vertical rectangle, polished medieval tavern style",
+	  "negative_prompt": "text, writing, logo, modern paper, clean white paper, scroll roll, cartoon, fantasy glowing border, metal frame"
+	}
+  ]
+}

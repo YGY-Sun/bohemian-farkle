@@ -1,0 +1,51 @@
+{
+  "name": "dice_set",
+  "goal": "生成 1-6 点骰子完整贴图。骰子是核心交互资产，必须保证角度、尺寸、材质、光源一致。",
+  "output_size": "256x256",
+  "output_format": "transparent_png",
+  "output_directory": "assets/art/ui/tavern/dice",
+  "transparent_background": true,
+  "review_required": true,
+  "review_questions": [
+	"1-6 点数是否清晰可读？",
+	"所有骰子的角度、尺寸、光源是否一致？",
+    "是否适合后续做滚动、选中、禁用状态？"
+  ],
+  "state_handling": {
+	"normal": "使用原贴图。",
+	"selected": "Godot 中添加暖色描边、轻微上移或光圈，不需要单独生成。",
+	"disabled": "Godot 中降低透明度和饱和度，不需要单独生成。"
+  },
+  "prompts": [
+	{
+	  "file_name": "die_1.png",
+	  "prompt": "A single medieval bone die showing one pip, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	},
+	{
+	  "file_name": "die_2.png",
+	  "prompt": "A single medieval bone die showing two pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	},
+	{
+	  "file_name": "die_3.png",
+	  "prompt": "A single medieval bone die showing three pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	},
+	{
+	  "file_name": "die_4.png",
+	  "prompt": "A single medieval bone die showing four pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	},
+	{
+	  "file_name": "die_5.png",
+	  "prompt": "A single medieval bone die showing five pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	},
+	{
+	  "file_name": "die_6.png",
+	  "prompt": "A single medieval bone die showing six pips, old ivory bone material, slightly rounded cube, worn edges, engraved dark pips, realistic tabletop candle lighting, transparent background, centered object, high detail, polished game asset, no text, no shadow cut off",
+	  "negative_prompt": "plastic dice, casino dice, bright red dice, modern glossy toy, cartoon, low poly, text, numbers, watermark, multiple dice, hand, table background"
+	}
+  ]
+}

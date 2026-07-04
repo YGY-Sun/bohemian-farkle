@@ -1,0 +1,29 @@
+{
+  "name": "global_style",
+  "usage": "所有后续素材生成都应遵守这个全局风格。先把这段作为风格约束喂给 Nano Banana，或复制到每次生成请求前。",
+  "style": "realistic polished game UI asset",
+  "setting": "medieval Bohemian tavern dice table",
+  "camera": "30-45 degree top-down close tabletop view",
+  "mood": "warm candlelit, dark tavern, worn wooden table, grounded historical atmosphere",
+  "palette": [
+	"dark worn wood",
+	"warm candle amber",
+	"aged parchment yellow-brown",
+	"old ivory bone dice",
+	"muted brass",
+    "deep shadow"
+  ],
+  "must_avoid": [
+	"modern casino",
+	"neon lights",
+	"plastic dice",
+	"cartoon mobile game style",
+	"clean modern UI cards",
+	"sci-fi",
+	"fantasy magic glow",
+	"watermark",
+	"logo",
+    "generated text inside image"
+  ],
+  "common_negative_prompt": "modern casino, neon lights, plastic dice, cartoon style, mobile game cartoon, clean modern UI, sci-fi, fantasy magic glow, text, logo, watermark"
+}
