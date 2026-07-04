@@ -422,28 +422,19 @@ func _add_die_selection_ring(center: Vector2) -> void:
 
 func _randomize_dice_poses(count: int) -> void:
 	dice_poses.clear()
-	var placed: Array[Vector2] = []
-	var min_distance := DICE_SIZE * 0.72
-	var margin := DICE_SIZE * 0.16
-	var max_position := DICE_AREA_SIZE - Vector2(DICE_SIZE, DICE_SIZE) - Vector2(margin, margin)
+	var slots: Array[Vector2] = [
+		Vector2(34, 38),
+		Vector2(180, 34),
+		Vector2(326, 42),
+		Vector2(42, 214),
+		Vector2(188, 222),
+		Vector2(324, 210)
+	]
+	slots.shuffle()
 
 	for i in range(count):
-		var position := Vector2.ZERO
-		var accepted := false
-		for attempt in range(36):
-			position = Vector2(
-				rng.randf_range(margin, max_position.x),
-				rng.randf_range(margin, max_position.y)
-			)
-			accepted = true
-			for other in placed:
-				if position.distance_to(other) < min_distance:
-					accepted = false
-					break
-			if accepted:
-				break
-
-		placed.append(position)
+		var jitter := Vector2(rng.randf_range(-8.0, 8.0), rng.randf_range(-8.0, 8.0))
+		var position := slots[i] + jitter
 		dice_poses.append({
 			"position": position,
 			"rotation": deg_to_rad(rng.randf_range(-20.0, 20.0))
