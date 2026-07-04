@@ -12,6 +12,7 @@ func run() -> Array[String]:
 	_roll_command_uses_injected_dice(failures)
 	_selection_command_tracks_selected_dice(failures)
 	_bank_command_adds_selection_and_changes_turn(failures)
+	_three_sixes_can_be_selected_and_rolled_again(failures)
 	_bust_roll_passes_turn_with_zero_turn_score(failures)
 	_hot_dice_rolls_all_six_after_all_dice_score(failures)
 
@@ -63,6 +64,17 @@ func _bank_command_adds_selection_and_changes_turn(failures: Array[String]) -> v
 	_expect_eq(failures, "bank adds selection", game.banked_scores[0], 150)
 	_expect_eq(failures, "bank changes turn", game.current_player, 1)
 	_expect_eq(failures, "bank clears dice", game.dice_values, [])
+
+
+func _three_sixes_can_be_selected_and_rolled_again(failures: Array[String]) -> void:
+	var game := FarkleMatch.new(MatchConfig.new())
+	game.set_roll_queue([[2, 3, 3, 6, 6, 6], [1, 5, 2]])
+	_expect_eq(failures, "roll with three sixes succeeds", game.roll_requested(), true)
+	_expect_eq(failures, "selecting three sixes succeeds", game.dice_selected([3, 4, 5]), true)
+	_expect_eq(failures, "three sixes selection scores", game.selection_score(), 600)
+	_expect_eq(failures, "rolling again after selecting three sixes succeeds", game.roll_requested(), true)
+	_expect_eq(failures, "three sixes are added to turn score", game.turn_score, 600)
+	_expect_eq(failures, "three remaining dice are rolled", game.dice_values, [1, 5, 2])
 
 
 func _bust_roll_passes_turn_with_zero_turn_score(failures: Array[String]) -> void:
