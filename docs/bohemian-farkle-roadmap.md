@@ -17,17 +17,19 @@ The game should keep the fast, readable tension of Farkle while gradually growin
 
 ## Current State
 
-The project currently has a playable Godot MVP:
+The project currently has a playable Godot MVP with the M1 gameplay core and M2 tavern tabletop UI merged into `main`:
 
 - Single-player match against AI.
 - Target score of 4000.
 - Easy, Normal, and Hard AI difficulty.
 - Dice rolling, dice selection, banking, busts, hot dice, and win detection.
 - Farkle scoring rules including singles, sets, straights, short straights, and three pairs.
-- A basic dynamically generated UI in `Main.gd`.
-- A separate tavern tabletop UI design spec.
+- A command-style gameplay core in `scripts/core/`.
+- A tavern tabletop UI with background art, parchment score/rules panels, and physical dice art.
+- UI wired to the gameplay core instead of calculating match outcomes directly.
+- Bust turn-transition feedback has been clarified after the M1/M2 merge.
 
-The prototype proves the core game can be played, but the code is still shaped like a prototype. The next priority is to turn the playable rules into an extensible gameplay core.
+The next priority is M2.1 integration stabilization: verify the merged core/UI experience in Godot, close any feedback gaps, and decide how to handle generated Godot `.uid` files before starting M3 progression systems.
 
 ## Guiding Principles
 
@@ -195,42 +197,43 @@ This table tracks each milestone, its working branch, current progress, and merg
 
 | Milestone | Purpose | Branch | Status | Progress | Notes |
 | --- | --- | --- | --- | ---: | --- |
-| M0: Playable Prototype | Establish the first playable Godot Farkle MVP. | `main` | Complete | 100% | Single-player AI match, scoring, banking, busts, hot dice, and basic UI are implemented. Current baseline has been pushed to GitHub. |
-| M1: Stable Gameplay Core | Extract scoring, match state, config, commands, and AI policy into a tested gameplay core. | `codex/gameplay-core-refactor` | In Progress | 10% | Branch created for core refactor. Initial direction is to add tests first, then split gameplay logic out of `Main.gd`. |
-| M2: Tavern Table UI Integration | Replace the prototype UI with a playable Bohemian tavern tabletop interface. | `bohemian-tavern-static-ui` | In Progress | 10% | Parallel UI branch exists. This branch should consume the M1 gameplay API once the core is stable. |
-| M3: NPC, Coins, Dice, And Badges | Add first progression systems: NPCs, rewards, dice collection, badges, and loadouts. | `TBD` | Not Started | 0% | Should start after M1 is merged. Some data structures may be prepared during M1, but full systems are deferred. |
-| M4: Local Multiplayer, Settings, And Save Data | Add local two-player mode, setup screens, settings, persistence, and match history. | `TBD` | Not Started | 0% | Depends on the command-based gameplay core and basic progression data. |
-| M5: Online Rooms And Synchronization | Add online rooms, network player commands, state sync, and disconnect handling. | `TBD` | Not Started | 0% | Depends heavily on M1 command architecture. Should not begin until local command flow is stable. |
+| M0: Playable Prototype | Establish the first playable Godot Farkle MVP. | `main` | Complete | 100% | Initial single-player AI match, scoring, banking, busts, hot dice, and prototype UI. |
+| M1: Stable Gameplay Core | Extract scoring, match state, config, commands, and AI policy into a tested gameplay core. | `codex/gameplay-core-refactor` | Complete | 100% | Merged into `main`. Added `FarkleScorer`, `FarkleMatch`, `MatchConfig`, `AiPolicy`, and core tests. |
+| M2: Tavern Table UI Integration | Replace the prototype UI with a playable Bohemian tavern tabletop interface. | `bohemian-tavern-static-ui` | Complete | 100% | Merged into `main`. Added tavern table visuals, dice art, parchment panels, and connected UI to the gameplay core. |
+| M2.1: Integration Stabilization | Stabilize M1+M2 merged gameplay/UI behavior. | `main` | In Progress | 60% | Bust turn-transition feedback has been fixed. Needs Godot editor verification, visual QA, and a `.uid` file policy. |
+| M3: NPC, Coins, Dice, And Badges | Add first progression systems: NPCs, rewards, dice collection, badges, and loadouts. | `TBD` | Not Started | 0% | Should start after M2.1 verification. |
+| M4: Local Multiplayer, Settings, And Save Data | Add local two-player mode, setup screens, settings, persistence, and match history. | `TBD` | Not Started | 0% | Depends on stable command flow and initial progression data. |
+| M5: Online Rooms And Synchronization | Add online rooms, network player commands, state sync, and disconnect handling. | `TBD` | Not Started | 0% | Requires deterministic/authoritative match handling decisions. |
 | M6: Content Polish And Release Preparation | Add animation, sound, ambience, content depth, export builds, and QA. | `TBD` | Not Started | 0% | Final polish phase after the core game loop, progression, and multiplayer foundations are stable. |
 
 ## Branch Coordination Rules
 
 - `main` should remain the stable baseline.
 - Feature work should happen on milestone or task branches.
-- UI work and gameplay-core work should stay isolated until M1 exposes a stable gameplay API.
+- UI work and gameplay-core work should stay isolated until a stable gameplay API exists.
 - M2 should avoid reimplementing gameplay rules in UI code.
 - M1 should avoid making visual UI redesign decisions.
-- Before merging M1 and M2 together, resolve API boundaries deliberately rather than letting one branch overwrite the other.
+- When merging parallel feature tracks, resolve API boundaries deliberately rather than letting one branch overwrite the other.
 - Branches should be merged only after their tests or manual verification criteria are satisfied.
 
-## Current Parallel Work
+## Recently Completed Integration
 
-Two major tracks are currently active:
+Two major tracks were completed and merged into `main`:
 
 1. `codex/gameplay-core-refactor`
    - Owns M1 gameplay architecture.
-   - Focuses on scoring tests, match config, command flow, AI policy, and keeping the current game playable through the new core.
+   - Added scoring tests, match config, command flow, AI policy, and a UI adapter flow.
 
 2. `bohemian-tavern-static-ui`
    - Owns M2 visual/interface direction.
-   - Focuses on replacing the plain prototype interface with the tavern tabletop experience.
+   - Replaced the plain prototype interface with the tavern tabletop experience.
 
-These branches are intentionally parallel. The expected integration path is:
+Integration notes:
 
-1. Finish and merge M1 gameplay core into `main`.
-2. Rebase or merge M2 UI work onto the updated `main`.
-3. Connect the tavern UI to the gameplay command API.
-4. Verify the full playable experience.
+- The UI should only render state and send commands.
+- The gameplay core should remain the source of truth for scoring, turn transitions, busts, banking, and win detection.
+- Bust feedback was corrected after integration so rolls such as `2-3-3-4-6-6` visibly pass the turn.
+- The merged build still needs Godot editor verification because command-line Godot is not available in the current automation environment.
 
 ## Milestones
 
@@ -274,6 +277,26 @@ Success criteria:
 - The UI does not directly calculate game outcomes.
 - The match remains fully playable.
 - Layout is readable at the configured viewport.
+
+## M2.1: Integration Stabilization
+
+Goal: Stabilize the merged M1 gameplay core and M2 tavern UI before adding progression systems.
+
+Scope:
+
+- Verify bust rolls such as `2-3-3-4-6-6` visibly pass the turn.
+- Confirm AI turns start, select dice, bank, bust, and return control clearly.
+- Confirm dice selection, banking, hot dice, and win detection still work through the tavern UI.
+- Confirm layout readability at the configured viewport.
+- Decide whether generated Godot `.uid` files should be committed or ignored.
+- Add focused regression tests for any gameplay/UI integration bug found during manual verification.
+
+Success criteria:
+
+- The merged M1+M2 build plays cleanly in the Godot editor.
+- The player can always tell whose turn it is and why control changed.
+- No known scoring, bust, hot dice, or banking regressions remain.
+- Generated Godot metadata policy is documented and the working tree can stay clean.
 
 ## M3: NPC, Coins, Dice, And Badges
 
@@ -359,15 +382,21 @@ Success criteria:
 
 ## Near-Term Priority
 
-The next best engineering step is M1.
+The next priority is M2.1 integration stabilization.
 
-Do not add more feature systems directly into `Main.gd`.
+Before starting M3 progression systems, verify the merged gameplay core and tavern UI inside Godot:
 
-The immediate job is to refactor the current playable prototype into a gameplay core with tests. Once that is stable, UI, special dice, badges, AI personalities, and online play can all build on the same foundation.
+- Confirm bust rolls such as `2-3-3-4-6-6` visibly pass the turn.
+- Confirm AI turns start and finish clearly.
+- Confirm dice selection, banking, hot dice, and win detection still work through the tavern UI.
+- Confirm layout readability at the configured viewport.
+- Decide whether generated Godot `.uid` files should be committed or ignored.
+
+After M2.1 is stable, begin M3 with data-first progression: NPC definitions, wallet/reward data, dice inventory, badge inventory, and match reward calculation.
 
 ## Open Design Questions
 
-These do not block M1, but should be answered before later milestones:
+These do not block M2.1, but should be answered before later milestones:
 
 - Should the match core be deterministic with injectable random sources for networking and replay?
 - Should special dice modify roll results, scoring rules, or both?
