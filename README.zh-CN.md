@@ -13,7 +13,7 @@
 5. 赢得金币、声望或解锁进度。
 6. 解锁更强的对手、更高级的牌桌、新骰子和新徽章。
 
-当前版本还是可玩原型，重点是把规则和对局流程跑通。后续会逐步把原型拆成可测试、可扩展的游戏内核，再接入酒馆桌面 UI、成长系统和联机能力。
+当前版本已经完成 M1 游戏内核重构和 M2 酒馆桌面 UI 合并。后续重点是先稳定合并后的体验，再进入 NPC、金币、骰子、徽章等成长系统。
 
 ## 当前状态
 
@@ -22,8 +22,10 @@
 - AI 支持 Easy、Normal、Hard 三种难度。
 - 已实现掷骰、选择计分骰、存分、爆骰、热骰和胜利判断。
 - 已实现基础 Farkle 计分规则。
-- 当前 UI 仍是 Godot 中动态生成的原型界面。
-- 酒馆桌面 UI 设计和项目路线图已写入文档。
+- 已拆出 `scripts/core/` 游戏内核：计分、对局状态、配置、AI 策略和核心测试。
+- 已接入酒馆桌面 UI：背景图、羊皮纸面板、实体骰子贴图和状态反馈。
+- UI 只负责展示状态和发送命令，规则结果由游戏内核决定。
+- 爆骰后的回合切换反馈已修正，例如 `2-3-3-4-6-6` 会明确显示切到 AI 回合。
 
 相关文档：
 
@@ -59,32 +61,35 @@
 2. 打开 `project.godot`。
 3. 运行主场景 `scenes/Main.tscn`，或直接点击 Godot 的 Run 按钮。
 
-如果本机安装了 Godot 命令行，也可以做脚本解析检查：
+可以使用 Godot 运行核心测试：
 
 ```sh
-godot --headless --check-only --script scripts/Main.gd --log-file /private/tmp/farkle-main-check.log
+/Applications/Godot.app/Contents/MacOS/Godot --headless --script tests/run_tests.gd --log-file /private/tmp/farkle-tests.log
 ```
+
+如果已经把 Godot 加入 `PATH`，也可以把上面的可执行路径替换成 `godot`。
 
 ## 开发路线
 
 当前项目按里程碑推进：
 
-- M1：稳定单机游戏内核，拆出计分、对局状态、命令、AI 策略，并补齐测试。
-- M2：接入酒馆桌面 UI，让游戏第一屏更像真实酒馆牌桌。
+- M1：稳定单机游戏内核，拆出计分、对局状态、命令、AI 策略，并补齐测试。已完成。
+- M2：接入酒馆桌面 UI，让游戏第一屏更像真实酒馆牌桌。已完成。
+- M2.1：稳定 M1+M2 合并后的体验，完成 Godot 编辑器视觉验证和 `.uid` 文件策略。
 - M3：加入 NPC、金币、骰子收藏和徽章系统。
 - M4：加入本地双人、设置、存档和战绩。
 - M5：加入联机房间、命令同步和断线处理。
 - M6：加入音效、动画、内容打磨和导出发布。
 
-近期优先级是 M1：不要继续把更多玩法堆进 `Main.gd`，而是先把当前可玩的规则拆成可测试、可扩展的 gameplay core。
+近期优先级是 M2.1：先确认合并后的游戏内核和酒馆 UI 在 Godot 编辑器中体验稳定，再进入 M3 成长系统。
 
 ## 分支说明
 
 - `main`：稳定基线。
-- `codex/gameplay-core-refactor`：游戏内核重构分支。
-- `bohemian-tavern-static-ui`：酒馆桌面 UI 分支。
+- `codex/gameplay-core-refactor`：游戏内核重构分支，已合并。
+- `bohemian-tavern-static-ui`：酒馆桌面 UI 分支，已合并。
 
-UI 分支和内核分支可以并行推进，但最终应以 gameplay core 的命令式 API 作为对接边界。
+后续新功能应继续使用 gameplay core 的命令式 API 作为 UI、AI、本地双人和联机模式的对接边界。
 
 ## 后续功能
 

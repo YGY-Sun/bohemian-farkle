@@ -233,7 +233,7 @@ Integration notes:
 - The UI should only render state and send commands.
 - The gameplay core should remain the source of truth for scoring, turn transitions, busts, banking, and win detection.
 - Bust feedback was corrected after integration so rolls such as `2-3-3-4-6-6` visibly pass the turn.
-- The merged build still needs Godot editor verification because command-line Godot is not available in the current automation environment.
+- The merged build can run core tests through `/Applications/Godot.app/Contents/MacOS/Godot`; it still needs hands-on Godot editor visual verification.
 
 ## Milestones
 

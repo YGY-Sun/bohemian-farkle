@@ -49,6 +49,12 @@ Run the core test suite with:
 godot --headless --script tests/run_tests.gd --log-file /private/tmp/farkle-tests.log
 ```
 
+On macOS, if Godot is installed as an app and is not on `PATH`, use:
+
+```sh
+/Applications/Godot.app/Contents/MacOS/Godot --headless --script tests/run_tests.gd --log-file /private/tmp/farkle-tests.log
+```
+
 ## Modes
 
 - Single Player: implemented. Player 1 is controlled by the local player, Player 2 is a background AI.
