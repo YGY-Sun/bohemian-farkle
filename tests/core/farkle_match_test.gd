@@ -67,11 +67,12 @@ func _bank_command_adds_selection_and_changes_turn(failures: Array[String]) -> v
 
 func _bust_roll_passes_turn_with_zero_turn_score(failures: Array[String]) -> void:
 	var game := FarkleMatch.new(MatchConfig.new())
-	game.set_roll_queue([[2, 2, 3, 3, 4, 6]])
+	game.set_roll_queue([[2, 3, 3, 4, 6, 6]])
 	_expect_eq(failures, "bust roll command returns false", game.roll_requested(), false)
 	_expect_eq(failures, "bust clears turn score", game.turn_score, 0)
 	_expect_eq(failures, "bust changes turn", game.current_player, 1)
 	_expect_eq(failures, "bust disables banking", game.can_bank, false)
+	_expect_eq(failures, "bust status names next turn", game.status, "Player 1 busts. No scoring dice, turn passes. AI's turn.")
 
 
 func _hot_dice_rolls_all_six_after_all_dice_score(failures: Array[String]) -> void:

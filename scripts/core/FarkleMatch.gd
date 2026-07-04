@@ -108,10 +108,11 @@ func _roll_new_values(dice_to_roll: int) -> bool:
 	held_indices.clear()
 
 	if scorer.is_bust(dice_values):
+		var busted_player_name := player_name(current_player)
 		turn_score = 0
 		can_bank = false
-		status = "%s busts. No scoring dice, turn passes." % player_name(current_player)
 		_next_player()
+		status = "%s busts. No scoring dice, turn passes. %s's turn." % [busted_player_name, player_name(current_player)]
 		return false
 
 	can_bank = true

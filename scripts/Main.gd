@@ -289,7 +289,15 @@ func _build_dice_table() -> Control:
 	table_space.alignment = BoxContainer.ALIGNMENT_CENTER
 
 	status_label = Label.new()
-	status_label.visible = false
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status_label.add_theme_color_override("font_color", Color("#f7ead0"))
+	status_label.add_theme_color_override("font_shadow_color", Color("#2b1206", 0.85))
+	status_label.add_theme_constant_override("shadow_offset_x", 2)
+	status_label.add_theme_constant_override("shadow_offset_y", 2)
+	status_label.add_theme_font_size_override("font_size", 18)
+	status_label.custom_minimum_size = Vector2(DICE_AREA_SIZE.x, 52)
+	table_space.add_child(status_label)
 
 	dice_box = Control.new()
 	dice_box.custom_minimum_size = DICE_AREA_SIZE
